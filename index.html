@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<!--
+  EDIT-ME GUIDE — search for these markers and replace with your real info:
+  1. "Your Name"        -> your actual name (appears in <title>, header brand, hero, footer)
+  2. Education years    -> "20XX – 20XX" / "20XX" placeholders need your real years, and
+     "Your Polytechnic Name", "Your School Name", "Your Board" need your real institute/board names.
+  2. Everything else (about, skills, education, projects, contact links) lives in the
+     DATA section near the bottom of this file, inside <script>...</script>.
+     To ADD a new skill row / project / education entry / contact link, just add
+     one more object to the matching array there — you don't need to touch any
+     HTML or CSS above. Each array has a commented example showing the shape to copy.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shivam — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #10151b;
+    --panel: #161d25;
+    --line: #2a333d;
+    --text: #e7ebee;
+    --muted: #8d99a5;
+    --signal: #ff8a4c;
+    --signal-dim: #ff8a4c33;
+    --link: #5fd0c9;
+    --radius: 3px;
+    --maxw: 1180px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; overflow-anchor: none; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Courier Prime', monospace;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-anchor: none;
+  }
+
+  a{ color: var(--link); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover, a:focus-visible{ border-bottom-color: var(--link); }
+  a:focus-visible, button:focus-visible{ outline: 2px solid var(--signal); outline-offset: 3px; }
+
+  ::selection{ background: var(--signal-dim); }
+
+  h1,h2,h3{
+    font-family: 'Special Elite', monospace;
+    font-weight: 400;
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  .label{
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  .wrap{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header.top{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    padding: 18px 24px;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    background: rgba(16,21,27,0.9);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  header.top .brand{ color: var(--text); }
+  header.top nav a{ color: var(--muted); margin-left: 22px; padding-bottom: 3px; border-bottom: 1px solid transparent; transition: color .15s ease, border-color .15s ease; }
+  header.top nav a:hover{ color: var(--text); }
+  header.top nav a.active{ color: var(--text); border-bottom-color: var(--signal); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding: 60px 0 70px;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+  .hero h1{
+    font-size: clamp(2.1rem, 5vw, 3rem);
+    margin-bottom: 14px;
+  }
+  .hero .role{
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 46ch;
+  }
+  .accent{ color: var(--signal); }
+  .hero .role .accent{ color: var(--signal); }
+
+  .graph-wrap svg{ width: 100%; height: auto; display:block; }
+  .graph-wrap .edge{
+    stroke: var(--line);
+    stroke-width: 1.5;
+    fill:none;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: draw 1.1s ease forwards;
+  }
+  .graph-wrap .node-dot{
+    fill: var(--panel);
+    stroke: var(--muted);
+    stroke-width: 1.5;
+    opacity: 0;
+    animation: appear .4s ease forwards;
+  }
+  .graph-wrap .node-dot.lit{ stroke: var(--signal); }
+  .graph-wrap text{
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    fill: var(--muted);
+    opacity: 0;
+    animation: appear .4s ease forwards;
+  }
+  @keyframes draw{ to{ stroke-dashoffset: 0; } }
+  @keyframes appear{ to{ opacity: 1; } }
+  @media (prefers-reduced-motion: reduce){
+    .graph-wrap .edge, .graph-wrap .node-dot, .graph-wrap text{ animation: none; stroke-dashoffset:0; opacity:1; }
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{
+    padding: 46px 0;
+    border-top: 1px solid var(--line);
+    scroll-margin-top: 70px;
+  }
+  section > .label{ display:block; margin-bottom: 18px; }
+
+  .about p{
+    max-width: 62ch;
+    color: var(--text);
+  }
+  .about p + p{ margin-top: 14px; }
+
+  /* ---------- SKILLS (topology chips) ---------- */
+  .skill-groups{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .skill-row{
+    display:flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+  .skill-row .domain{
+    font-family:'Courier Prime', monospace;
+    font-size: 0.8rem;
+    color: var(--signal);
+    min-width: 130px;
+  }
+  .skill-row .items{
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .skill-row .items span{ color: var(--text); }
+  .skill-row .items span:not(:last-child)::after{ content: " · "; color: var(--line); }
+
+  /* ---------- EDUCATION ---------- */
+  .edu-list{ display:flex; flex-direction:column; gap: 22px; }
+  .edu-row{
+    display:grid;
+    grid-template-columns: 100px 1fr;
+    gap: 18px;
+  }
+  .edu-row .year{
+    font-family:'Courier Prime', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    padding-top: 2px;
+  }
+  .edu-row .degree{ font-size: 1rem; color: var(--text); margin-bottom: 3px; }
+  .edu-row .school{ color: var(--muted); font-size: 0.92rem; }
+  @media (max-width: 640px){
+    .edu-row{ grid-template-columns: 70px 1fr; }
+  }
+
+  /* ---------- PROJECTS ---------- */
+  #projects-list{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px 40px;
+  }
+  @media (min-width: 900px){
+    #projects-list{ grid-template-columns: 1fr 1fr; }
+  }
+  .project{
+    border-left: 2px solid var(--line);
+    padding: 4px 0 4px 20px;
+    transition: border-color .18s ease;
+  }
+  .project:hover, .project:focus-within{ border-left-color: var(--signal); }
+  .project h3{ font-size: 1.15rem; margin-bottom: 6px; }
+  .project h3 a{ color: var(--text); }
+  .project h3 a:hover{ color: var(--signal); border-color: var(--signal); }
+  .project p{ color: var(--muted); max-width: 60ch; margin: 0 0 10px; }
+  .tags{ display:flex; gap: 8px; flex-wrap: wrap; }
+  .tags span{
+    font-family:'Courier Prime', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 2px 8px;
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact .prompt{
+    font-family:'Courier Prime', monospace;
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 22px;
+  }
+  .contact .prompt .accent{ color: var(--signal); }
+  .contact-links{
+    display:flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1rem;
+  }
+  .contact-links a{ color: var(--text); }
+  .contact-links .tag{ color: var(--muted); font-family:'Courier Prime', monospace; font-size: 0.8rem; margin-right: 10px; }
+
+  footer{
+    padding: 30px 0 50px;
+    color: var(--muted);
+    font-family:'Courier Prime', monospace;
+    font-size: 0.78rem;
+  }
+
+  @media (max-width: 640px){
+    header.top{ padding: 14px 20px; }
+    header.top nav a{ margin-left: 14px; }
+    .hero{ grid-template-columns: 1fr; padding-top: 30px; }
+    .graph-wrap{ order: -1; max-width: 260px; }
+    .skill-row{ flex-direction: column; gap: 4px; }
+    .skill-row .domain{ min-width: unset; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <span class="brand">SHIVAM</span>
+  <nav>
+    <a href="#about">about</a>
+    <a href="#skills">skills</a>
+    <a href="#education">education</a>
+    <a href="#projects">projects</a>
+    <a href="#contact">contact</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <section class="hero" id="top">
+    <div>
+      <h1>Shivam</h1>
+      <p class="role">
+        Computer science student working across <span class="accent">AI</span>,
+        <span class="accent">NETWORKS</span>, and <span class="accent">DATA SCIENCE</span> —
+        and shipping things students actually use.
+      </p>
+    </div>
+    <div class="graph-wrap" aria-hidden="true">
+      <svg viewBox="0 0 260 200">
+        <path class="edge" style="animation-delay:.05s" d="M40,100 C80,60 120,60 130,100" />
+        <path class="edge" style="animation-delay:.15s" d="M130,100 C140,60 180,60 210,50" />
+        <path class="edge" style="animation-delay:.25s" d="M130,100 C140,140 180,150 215,150" />
+        <path class="edge" style="animation-delay:.35s" d="M40,100 C60,140 90,150 120,150" />
+        <path class="edge" style="animation-delay:.45s" d="M120,150 C150,150 180,150 215,150" />
+        <circle class="node-dot lit" style="animation-delay:.6s" cx="40" cy="100" r="6"/>
+        <circle class="node-dot" style="animation-delay:.7s" cx="130" cy="100" r="6"/>
+        <circle class="node-dot" style="animation-delay:.8s" cx="210" cy="50" r="5"/>
+        <circle class="node-dot" style="animation-delay:.9s" cx="215" cy="150" r="5"/>
+        <circle class="node-dot" style="animation-delay:1s" cx="120" cy="150" r="5"/>
+        <text style="animation-delay:.75s" x="14" y="90">core</text>
+        <text style="animation-delay:.85s" x="150" y="46">ai/ml</text>
+        <text style="animation-delay:.95s" x="150" y="168">data science</text>
+        <text style="animation-delay:1.05s" x="70" y="168">networks</text>
+      </svg>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <span class="label">about</span>
+    <div id="about-list"></div>
+  </section>
+
+  <section id="skills">
+    <span class="label">skills</span>
+    <div class="skill-groups" id="skills-list"></div>
+  </section>
+
+  <section id="education">
+    <span class="label">education</span>
+    <div class="edu-list" id="education-list"></div>
+  </section>
+
+  <section id="projects">
+    <span class="label">projects</span>
+    <div id="projects-list"></div>
+  </section>
+
+  <section class="contact" id="contact">
+    <span class="label">contact</span>
+    <p class="prompt">$ echo <span class="accent">"reach me at"</span></p>
+    <div class="contact-links" id="contact-list"></div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">built by Shivam · deployed on GitHub Pages</div>
+</footer>
+
+<!--
+  ============================================================
+  DATA — everything below is what actually shows up on the page.
+  To add a new skill, project, education entry, contact link, or
+  about paragraph: just add one more line/object to the matching
+  array. No need to touch the HTML or CSS above.
+  ============================================================
+-->
+<script>
+  // ---- ABOUT: one string per paragraph. Add more lines to add paragraphs. ----
+  const aboutData = [
+    "I'm a polytechnic computer science student, also pursuing a <span class=\"accent\">BS in Data Science and Applications from IIT Madras </span> alongside it. Between the two, I work across <span class=\"accent\">AI</span>, <span class=\"accent\">computer networks</span>, <span class=\"accent\">information security</span>, and <span class=\"accent\">mobile app development</span>. Most of what's here started as a course project or a problem I ran into while studying — then turned into something worth deploying.",
+    "I care about making technical material easier to learn from — several of my projects are tools built for other students, not just for grading."
+  ];
+
+  // ---- SKILLS: one object per row. "domain" is the row label, "items" is the list of skills in it. ----
+  const skillsData = [
+    { domain: "languages", items: ["Python", "JavaScript", "HTML/CSS"] },
+    { domain: "web / apps", items: ["React", "Tailwind CSS", "Vite", "Mobile app dev"] },
+    { domain: "core cs", items: ["Computer networks", "Information security", "Artificial intelligence", "Software engineering"] },
+    { domain: "tools", items: ["Git / GitHub", "Vercel", "ReportLab", "Recharts"] }
+    // add another row like: { domain: "new domain", items: ["skill 1", "skill 2"] },
+  ];
+
+  // ---- EDUCATION: one object per entry, most recent / current first.
+  // "board" is the exam board / affiliating body (school board, or BTEUP, or the university) — optional. ----
+  const educationData = [
+    { year: "2024 – Present", degree: "BS in Data Science and Applications", school: "IIT Madras", board: "" },
+    { year: "2024 – Present", degree: "Diploma in Computer Science &amp; Engineering", school: "Government Polytechnic Sikandra Kanpur Dehat", board: "BTEUP" },
+    { year: "2023", degree: "Class 12", school: "S.R.P Inter College Konch", board: "UP Board" },
+    { year: "2021", degree: "Class 10", school: "Suraj Gyan Inter College Konch", board: "UP Board" }
+    // add another entry like: { year: "20XX", degree: "...", school: "...", board: "..." },
+  ];
+
+  // ---- PROJECTS: one object per project. "link" can be "#" until you have a real URL. ----
+  const projectsData = [
+    {
+      title: "Study Group Hub",
+      link: "https://studygrouphub.in/",
+      description: "A free educational platform for Class 10 and 12 students — notes, NCERT solutions, previous-year papers, and quizzes, with a dark mode and a notebook-style theme.",
+      tags: ["HTML","React", "Tailwind CSS", "JavaScript"]
+    },
+    {
+      title: "Student Result Analyzer",
+      link: "#",
+      description: "A React dashboard for visualizing student results, with Recharts-driven charts, a dark navy theme, and browser-based data persistence. Deployed on Vercel.",
+      tags: ["React", "Recharts", "Vite"]
+    },
+    // {
+    //   title: "JEECUP 2026 Quiz",
+    //   link: "#",
+    //   description: "A self-contained quiz app for UP Polytechnic entrance-exam prep — 40 Hindi-language questions across Math, Chemistry, and Physics, with instant feedback and a results screen.",
+    //   tags: ["JavaScript", "Hindi", "Single-file app"]
+    // }
+    // add another project like:
+    // { title: "New Project", link: "https://...", description: "...", tags: ["Tag1", "Tag2"] },
+  ];
+
+  // ---- CONTACT: one object per link row. ----
+  const contactData = [
+    {tag: "phone", label: "9695740452", href: "tel:+919695740452"},
+    { tag: "mail", label: "shivamkumar64426@gmail.com", href: "mailto:shivamkumar64426@gmail.com" },
+    { tag: "github", label: "https://github.com/imshivamup92", href: "https://github.com/imshivamup92" },
+    { tag: "linkedin", label: "https://www.linkedin.com/in/shivam-kumar-90788031b/", href: "https://www.linkedin.com/in/shivam-kumar-90788031b/" }
+    // add another link like: { tag: "twitter", label: "x.com/your-handle", href: "https://x.com/your-handle" },
+  ];
+
+  // ---- render functions (no need to edit below this line) ----
+  document.getElementById("about-list").innerHTML =
+    aboutData.map(para => `<p>${para}</p>`).join("");
+
+  document.getElementById("skills-list").innerHTML =
+    skillsData.map(row => `
+      <div class="skill-row">
+        <span class="domain">${row.domain}</span>
+        <span class="items">${row.items.map(i => `<span>${i}</span>`).join("")}</span>
+      </div>
+    `).join("");
+
+  document.getElementById("education-list").innerHTML =
+    educationData.map(e => `
+      <div class="edu-row">
+        <span class="year">${e.year}</span>
+        <div>
+          <div class="degree">${e.degree}</div>
+          <div class="school">${e.school}${e.board ? " · " + e.board : ""}</div>
+        </div>
+      </div>
+    `).join("");
+
+  document.getElementById("projects-list").innerHTML =
+    projectsData.map(p => `
+      <div class="project">
+        <h3><a href="${p.link}" target="_blank" rel="noopener">${p.title}</a></h3>
+        <p>${p.description}</p>
+        <div class="tags">${p.tags.map(t => `<span>${t}</span>`).join("")}</div>
+      </div>
+    `).join("");
+
+  document.getElementById("contact-list").innerHTML =
+    contactData.map(c => `
+      <div><span class="tag">${c.tag}</span><a href="${c.href}" target="_blank" rel="noopener">${c.label}</a></div>
+    `).join("");
+
+  // ---- active nav underline: highlights the link for whichever section is on screen ----
+  const navLinks = Array.from(document.querySelectorAll('header.top nav a'));
+  const navSections = navLinks
+    .map(link => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
+
+  const setActive = (id) => {
+    navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + id));
+  };
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) setActive(entry.target.id);
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+  navSections.forEach(sec => sectionObserver.observe(sec));
+</script>
+
+</body>
+</html>
