@@ -123,6 +123,8 @@
   .cmd{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--muted);margin-left:12px}
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:28px}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px 18px}
+  .card,#about .win{transition:border-color .15s}
+  .card:hover,#about .win:hover,#about .win:focus-within{border-color:var(--blue)}
   .card h3{margin:0 0 6px;font-size:.95rem;color:var(--text)}
   .card p{margin:0;color:var(--muted);font-size:.86rem}
   .hl{margin:2px 0 0;padding:0;list-style:none;font-size:.84rem;color:var(--muted)}
@@ -131,6 +133,31 @@
   footer{border-top:1px solid var(--line);padding:26px 0 44px;color:var(--muted);font-size:.8rem}
 
   @media(prefers-reduced-motion:reduce){.cursor{animation:none}html{scroll-behavior:auto}}
+
+  /* hover border everywhere */
+  .win,.skill-row,.commit .body,.contact-links .row,.chip{transition:border-color .15s}
+  .win:hover,.win:focus-within,.skill-row:hover,.commit .body:hover,.contact-links .row:hover,.chip:hover{border-color:var(--blue)}
+  .skill-row{border:1px solid var(--line);border-radius:8px;padding:12px 16px;background:var(--panel)}
+  .skill-row:hover .chip{background:var(--bg)}
+  .commit{padding-bottom:14px}
+  .commit .body{padding:10px 16px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+  .contact-links{gap:10px}
+  .contact-links .row{border:1px solid var(--line);border-radius:8px;padding:10px 16px;background:var(--panel)}
+  .skill-groups{gap:12px}
+
+  /* no boxes in skills, education, contact */
+  .skill-row,.skill-row:hover{border:none;padding:0;background:none;border-radius:0}
+  .skill-row:hover .chip{background:var(--panel)}
+  .chip:hover{border-color:var(--line)}
+  .skill-groups{gap:16px}
+  .commit{padding-bottom:0}
+  .commit .body,.commit .body:hover{border:none;padding:0 0 22px;background:none;border-radius:0}
+  .contact-links{gap:6px}
+  .contact-links .row,.contact-links .row:hover{border:none;padding:0;background:none;border-radius:0}
+
+  /* skill chips: hover border */
+  .chip{transition:border-color .15s}
+  .chip:hover{border-color:var(--blue)}
 </style>
 </head>
 <body>
